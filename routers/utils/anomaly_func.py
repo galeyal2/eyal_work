@@ -4,8 +4,11 @@ from collections import defaultdict
 from db_connections.sqlite_conn import get_db
 from utils.my_logger import orca_logger
 
+# Initialize processed_events as a global defaultdict
+processed_events = defaultdict(int)
 
-def process_chunk(worker_number:int, chunk, result_queue):
+
+def process_chunk(worker_number: int, chunk, result_queue):
     """
     Process a chunk of data and put the results in the result_queue.
     """
@@ -19,7 +22,7 @@ def process_chunk(worker_number:int, chunk, result_queue):
 
 
 def process_event(event):
-    processed_events = defaultdict(int)
+    global processed_events
     anomaly_score = random.randint(0, 1)
     event_id = event['event_id']
 
@@ -31,7 +34,7 @@ def process_event(event):
         anomaly_score = fetch_anomaly_score_from_db(event_id)
         if anomaly_score is None:
             anomaly_score = random.randint(0, 1)
-    event[anomaly_score] = anomaly_score
+    event['anomaly_score'] = anomaly_score
     return event
 
 
