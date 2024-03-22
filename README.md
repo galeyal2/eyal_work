@@ -64,8 +64,20 @@ The project is organized into different directories:
 
 4. **Start the FastAPI server**:
    ```bash
-   uvicorn main:app --host=localhost --port=9000 --log-level=info --reload
+   uvicorn main:app --host=127.0.0.1 --port=9000 --log-level=info --reload
    ```
+## Docker
+1. **build docker image**:
+   ```bash
+   docker build -t eyal_orca -f dockerfile .
+   ```
+2. **run docker image**
+   ```bash
+   docker run -p 9000:9000 --rm eyal_orca
+   ```
+   
+# Run Http:
+   [run_requests.http](run_requests.http)
 
 ## Event Processing
 
