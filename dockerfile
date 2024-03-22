@@ -10,4 +10,4 @@ RUN pip install --no-cache-dir -r requirements.txt
 COPY . .
 
 # Run create_faker_events.py and then start uvicorn server
-CMD ["sh", "-c", "python sources/create_faker_events.py && uvicorn main:app --host=0.0.0.0 --port=9000 --log-level=info --reload"]
+CMD ["sh", "-c", "python sources/create_faker_events.py && uvicorn main:app --host=localhost --port=9000 --log-level=info --reload"]
