@@ -1,6 +1,6 @@
 import json
 
-from sqlalchemy import Column, DateTime, Integer, String, TypeDecorator
+from sqlalchemy import Column, DateTime, Integer, String, TypeDecorator, ARRAY
 
 from db_connections.sqlite_conn import SqliteBase
 
@@ -15,8 +15,14 @@ class ArrayString(TypeDecorator):
 
     def process_result_value(self, value, dialect):
         if value is not None:
-            return json.loads(value)
+            try:
+                return json.loads(value)
+            except json.JSONDecodeError as e:
+                print("Error decoding JSON:", e)
+                print("Value causing error:", value)
+                return None
         return None
+
 
 
 class CloudEventTemp(SqliteBase):
@@ -27,7 +33,7 @@ class CloudEventTemp(SqliteBase):
     request_id = Column(String(255))
     event_type = Column(String(255))
     event_timestamp = Column(DateTime)
-    affected_assets = Column(ArrayString)
+    affected_assets = Column(ARRAY(String))
     anomaly_score = Column(Integer)
 
 
@@ -38,5 +44,5 @@ class CloudEvent(SqliteBase):
     request_id = Column(String(255))
     event_type = Column(String(255))
     event_timestamp = Column(DateTime)
-    affected_assets = Column(ArrayString)
+    affected_assets = Column(ARRAY(String))
     anomaly_score = Column(Integer)

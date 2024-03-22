@@ -18,7 +18,6 @@ cloud_route = APIRouter(
 
 @cloud_route.get("/run", status_code=status.HTTP_200_OK)
 async def cloud_process(file_source_path: str = 'sources'):
-
     event_process(file_source_path)
 
     run_query([read_tmp_without_dup,
@@ -28,5 +27,5 @@ async def cloud_process(file_source_path: str = 'sources'):
 
 
 @cloud_route.get(path='/', response_model=List[ShowCloudResult])
-async def get_annomaly(db: Session = Depends(get_db_for_repo)):
+async def get_anomaly(db: Session = Depends(get_db_for_repo)):
     return select_all_records(table_model=CloudEvent, db=db)

@@ -1,3 +1,4 @@
+from datetime import datetime
 from typing import List
 
 from pydantic import BaseModel
@@ -11,12 +12,11 @@ class CloudSchema(BaseModel):
 
 
 class ShowCloudResult(BaseModel):
-    id: int
     event_id: str
     request_id: str
     event_type: str
-    event_timestamp: str
-    affected_assets: List[str]
+    event_timestamp: datetime
+    affected_assets: str
     anomaly_score: int
 
     class Config:
