@@ -11,18 +11,20 @@ processed_events = defaultdict(int)
 
 
 def process_chunk(worker_number: int, chunk, result_queue):
+    print("working")
+
     """
     Process a chunk of data and put the results in the result_queue.
     """
-    orca_logger.info(f"Worker number {worker_number} started processing.")
-    results = []
-    for event in chunk:
-        event = process_event(event)
-        if event:
-            results.append(event)
-    orca_logger.info("Worker finished processing.")
-    result_queue.put(results)
-    insert_events_in_db(results)
+    # orca_logger.info(f"Worker number {worker_number} started processing.")
+    # results = []
+    # for event in chunk:
+    #     event = process_event(event)
+    #     if event:
+    #         results.append(event)
+    # result_queue.put(results)
+    # insert_events_in_db(results)
+    # orca_logger.info("Worker finished processing.")
 
 
 def process_event(event):

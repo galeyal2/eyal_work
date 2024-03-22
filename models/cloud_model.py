@@ -33,7 +33,7 @@ class CloudEventTemp(SqliteBase):
     request_id = Column(String(255))
     event_type = Column(String(255))
     event_timestamp = Column(DateTime)
-    affected_assets = Column(ARRAY(String))
+    affected_assets = Column(ArrayString)
     anomaly_score = Column(Integer)
 
 
@@ -44,5 +44,5 @@ class CloudEvent(SqliteBase):
     request_id = Column(String(255))
     event_type = Column(String(255))
     event_timestamp = Column(DateTime)
-    affected_assets = Column(ARRAY(String))
+    affected_assets = Column(ArrayString)
     anomaly_score = Column(Integer)
