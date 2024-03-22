@@ -48,56 +48,60 @@ The project is organized into different directories:
 
 ## Installation
 
-1. Clone the repository:
+1. **Clone the repository**:
+   ```bash
+   git clone https://github.com/galeyal2/eyal_orca.git
+   ```
+2. **Install the dependencies**:
+   ```bash 
+   pip install -r requirements.txt
+   ```
 
-```bash
-git clone https://github.com/galeyal2/eyal_orca.git
-```
+3. **run Faker to create fake records**:
+   ```bash
+   python sources/create_faker_events.py
+   ```
 
-2. Install the dependencies:
-
-```bash 
-pip install -r requirements.txt
-```
-
-3.run Faker to create fake records
-
-```bash
-python sources/create_faker_events.py
-```
-
-4. Start the FastAPI server:
-
-```bash
-uvicorn main:app --host=0.0.0.0 --port=9000 --log-level=info --reload
-```
-
+4. **Start the FastAPI server**:
+   ```bash
+   uvicorn main:app --host=0.0.0.0 --port=9000 --log-level=info --reload
+   ```
 
 ## Event Processing
 
-The `event_process(file_source_path)` function is responsible for processing cloud events from a specified file source path and storing them in the database. Here's a breakdown of how it works:
+The `event_process(file_source_path)` function is responsible for processing cloud events from a specified file source
+path and storing them in the database. Here's a breakdown of how it works:
 
-1. **Reading Data**: 
-   - The function starts by reading data from the specified file source path. This data usually comprises bulk cloud events stored in a CSV file format.
+1. **Reading Data**:
+    - The function starts by reading data from the specified file source path. This data usually comprises bulk cloud
+      events stored in a CSV file format.
 
-2. **Chunk Processing**: 
-   - To optimize memory usage, the function processes the data in manageable chunks. Each chunk of data is processed independently, allowing for more efficient processing.
+2. **Chunk Processing**:
+    - To optimize memory usage, the function processes the data in manageable chunks. Each chunk of data is processed
+      independently, allowing for more efficient processing.
 
-3. **Queue Management**: 
-   - Efficient data processing is ensured through queue management. The function generates a queue of chunks to be processed and a result queue to store the processed results.
+3. **Queue Management**:
+    - Efficient data processing is ensured through queue management. The function generates a queue of chunks to be
+      processed and a result queue to store the processed results.
 
-4. **Worker Creation**: 
-   - Concurrent processing is facilitated by creating worker threads, each tasked with processing a chunk of data. This parallelization enhances performance by distributing the processing load across multiple threads.
+4. **Worker Creation**:
+    - Concurrent processing is facilitated by creating worker threads, each tasked with processing a chunk of data. This
+      parallelization enhances performance by distributing the processing load across multiple threads.
 
-5. **Processing**: 
-   - Each worker thread processes its assigned chunk of data by executing a predefined set of processing tasks defined in the `anomaly_func.py` module. These tasks may include generating anomaly scores for events, updating event counts, and inserting events into the database.
+5. **Processing**:
+    - Each worker thread processes its assigned chunk of data by executing a predefined set of processing tasks defined
+      in the `anomaly_func.py` module. These tasks may include generating anomaly scores for events, updating event
+      counts, and inserting events into the database.
 
-6. **Error Handling**: 
-   - Error handling is implemented to gracefully manage any encountered errors during processing. If a worker thread encounters an error, it is logged, and the overall processing status is appropriately updated.
+6. **Error Handling**:
+    - Error handling is implemented to gracefully manage any encountered errors during processing. If a worker thread
+      encounters an error, it is logged, and the overall processing status is appropriately updated.
 
-7. **Database Insertion**: 
-   - Upon processing all chunks of data, the function proceeds to insert the processed events into the SQLite database using the `insert_tmp_into_target()` function.
+7. **Database Insertion**:
+    - Upon processing all chunks of data, the function proceeds to insert the processed events into the SQLite database
+      using the `insert_tmp_into_target()` function.
 
-8. **Completion Status**: 
-   - Finally, the function verifies the status of all worker threads. If any worker thread fails to process its chunk successfully, an HTTP exception is raised, indicating that one or more workers have failed.
+8. **Completion Status**:
+    - Finally, the function verifies the status of all worker threads. If any worker thread fails to process its chunk
+      successfully, an HTTP exception is raised, indicating that one or more workers have failed.
 
