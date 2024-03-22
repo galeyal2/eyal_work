@@ -1,4 +1,5 @@
 import os
+from datetime import datetime
 
 
 def read_in_bulks(data_source: str = "sources", num: int = 1000):
@@ -10,7 +11,12 @@ def read_in_bulks(data_source: str = "sources", num: int = 1000):
             try:
                 for _ in range(num):
                     line = next(f)
-                    chunk.append(line.strip().split(','))
+                    row_values = line.strip().split(';')
+                    event_id, request_id, event_type, event_timestamp, affected_assets = row_values
+                    event_timestamp = datetime.strptime(event_timestamp, '%Y-%m-%d %H:%M:%S')
+                    row_dict = {'event_id': event_id, 'request_id': request_id, 'event_type': event_type,
+                        'event_timestamp': event_timestamp, 'affected_assets': affected_assets}
+                    chunk.append(row_dict)
             except StopIteration:
                 if chunk:
                     yield chunk

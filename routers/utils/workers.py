@@ -14,6 +14,7 @@ def create_workers(target: Callable,
     threads = []
     worker_status = {}  # Dictionary to store the status of each worker thread
     for i in range(num_workers):
+        orca_logger.info(f"Init worker number: {i}")
         thread = threading.Thread(target=worker_wrapper,
                                   args=(i, target, chunk_queue, result_queue, worker_status)
                                   )

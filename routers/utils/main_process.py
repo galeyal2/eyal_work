@@ -17,7 +17,7 @@ def event_process(file_source_path: str = 'sources'):
                                        chunk_queue=chunk_queue,
                                        result_queue=result_queue)
 
-    if all_success:
+    if not all_success:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,
                             detail=f"one or more workers failed")
 

@@ -1,6 +1,6 @@
-from pydantic import BaseModel
+from typing import List
 
-from models.cloud_model import ArrayString
+from pydantic import BaseModel
 
 
 class CloudSchema(BaseModel):
@@ -9,15 +9,15 @@ class CloudSchema(BaseModel):
     class Config:
         arbitrary_types_allowed = True
 
+
 class ShowCloudResult(BaseModel):
     id: int
     event_id: str
     request_id: str
     event_type: str
     event_timestamp: str
-    affected_assets: ArrayString
+    affected_assets: List[str]
     anomaly_score: int
 
-    class Config():
-        from_attributes = True
+    class Config:
         arbitrary_types_allowed = True

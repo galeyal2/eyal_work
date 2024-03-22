@@ -17,7 +17,7 @@ def generate_fake_event_id() -> str:
 def generate_fake_data_csv(file_path, num_records):
     with open(file_path, 'w', newline='') as csvfile:
         fieldnames = ['event_id', 'request_id', 'event_type', 'event_timestamp', 'affected_assets']
-        writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
+        writer = csv.DictWriter(csvfile, fieldnames=fieldnames,delimiter=';')
         writer.writeheader()
         for _ in range(num_records):
             event_id = generate_fake_event_id()
