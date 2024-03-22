@@ -27,8 +27,12 @@ def get_db_for_repo() -> Generator[Session, None, None]:
     finally:
         db.close()
 
-def run_query(query:str):
+
+def run_query(query: str | list):
     with get_db() as db:
-        db.execute(
-            text(query)
-        )
+        if isinstance(query, str):
+            query = [query]
+        for q in query:
+            db.execute(
+                text(q)
+            )
