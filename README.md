@@ -46,7 +46,7 @@ The project is organized into different directories:
 - [Pydantic](https://pydantic-docs.helpmanual.io/)
 - [Faker](https://faker.readthedocs.io/)
 
-## Installation
+## Installation For Manual Run
 
 1. **Clone the repository**:
    ```bash
@@ -76,7 +76,7 @@ The project is organized into different directories:
    docker run -p 9000:9000 --rm eyal_orca
    ```
    
-# Run Http:
+# Run Http
    [run_requests.http](run_requests.http)
 
 ## Event Processing
