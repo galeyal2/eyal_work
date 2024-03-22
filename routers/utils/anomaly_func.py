@@ -1,6 +1,8 @@
 import random
 from collections import defaultdict
 
+from sqlalchemy import text
+
 from db_connections.sqlite_conn import get_db
 from utils.my_logger import orca_logger
 
@@ -16,9 +18,11 @@ def process_chunk(worker_number: int, chunk, result_queue):
     results = []
     for event in chunk:
         event = process_event(event)
-        results.append(event)
+        if event:
+            results.append(event)
     orca_logger.info("Worker finished processing.")
     result_queue.put(results)
+    insert_events_in_db(results)
 
 
 def process_event(event):
@@ -35,19 +39,40 @@ def process_event(event):
         if anomaly_score is None:
             anomaly_score = random.randint(0, 1)
     event['anomaly_score'] = anomaly_score
-    return event
+
+    if event['anomaly_score'] == 1:
+        return event
 
 
-def insert_event_in_db(event):
+def insert_events_in_db(events):
     with get_db() as db:
-        db.execute(
-            "INSERT INTO events (event_id, request_id, event_type, event_timestamp, affected_assets, anomaly_score) VALUES (?, ?, ?, ?, ?, ?)",
-            (event['event_id'], event['request_id'], event['event_type'], event['event_timestamp'],
-             ','.join(event['affected_assets']), event['anomaly_score'])
-        )
+        try:
+            db.execute(
+                text("INSERT INTO cloud_events_tmp (event_id, "
+                     "request_id, "
+                     "event_type, "
+                     "event_timestamp, "
+                     "affected_assets, "
+                     "anomaly_score)"
+                     " VALUES (:event_id, :request_id, :event_type, :event_timestamp, :affected_assets, :anomaly_score)"),
+                [{
+                    'event_id': event['event_id'],
+                    'request_id': event['request_id'],
+                    'event_type': event['event_type'],
+                    'event_timestamp': str(event['event_timestamp']),
+                    'affected_assets': event['affected_assets'],
+                    'anomaly_score': event['anomaly_score']
+                } for event in events]
+            )
+        except Exception as e:
+            raise e
 
 
 def fetch_anomaly_score_from_db(event_id):
     with get_db() as db:
-        result = db.execute("SELECT anomaly_score FROM anomaly_results WHERE event_id=?", (event_id,))
-        return result.fetchone()[0] if result else None
+        result = db.execute(text("SELECT anomaly_score FROM cloud_events WHERE event_id=:event_id"),
+                            {"event_id": event_id})
+        if result.fetchone():
+            return result.fetchone()[0]
+        else:
+            return

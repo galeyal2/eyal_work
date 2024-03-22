@@ -15,6 +15,7 @@ def get_db() -> Generator[Session, None, None]:
     db = SessionLocal()
     try:
         yield db
+        db.commit()
     finally:
         db.close()
 
@@ -25,3 +26,9 @@ def get_db_for_repo() -> Generator[Session, None, None]:
         yield db
     finally:
         db.close()
+
+def run_query(query:str):
+    with get_db() as db:
+        db.execute(
+            query
+        )

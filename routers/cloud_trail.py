@@ -17,6 +17,7 @@ cloud_route = APIRouter(
 
 @cloud_route.get("/run", status_code=status.HTTP_200_OK)
 async def cloud_process(file_source_path: str = 'sources'):
+
     event_process(file_source_path)
     insert_tmp_into_target()
     return {"message": f"events were processed inserted to the db"}
