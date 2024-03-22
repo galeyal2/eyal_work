@@ -20,7 +20,6 @@ class ArrayString(TypeDecorator):
 
 
 class CloudEventTemp(SqliteBase):
-
     __tablename__ = 'cloud_events_tmp'
 
     id = Column(Integer, primary_key=True)
@@ -30,6 +29,7 @@ class CloudEventTemp(SqliteBase):
     event_timestamp = Column(DateTime)
     affected_assets = Column(ArrayString)
     anomaly_score = Column(Integer)
+
 
 class CloudEvent(SqliteBase):
     __tablename__ = 'cloud_events'

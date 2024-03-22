@@ -11,7 +11,7 @@ from schema.cloud_schema import ShowCloudResult
 
 cloud_route = APIRouter(
     tags=['cloud_trail'],
-    prefix='cloud'
+    prefix='/cloud'
 )
 
 
@@ -22,6 +22,6 @@ async def cloud_process(file_source_path: str = 'sources'):
     return {"message": f"events were processed inserted to the db"}
 
 
-@cloud_route.get(path='', response_model=List[ShowCloudResult])
+@cloud_route.get(path='/', response_model=List[ShowCloudResult])
 async def get_annomaly(db: Session = Depends(get_db)):
     return select_all_records(table_model=CloudEvent, db=db)

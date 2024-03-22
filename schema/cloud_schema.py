@@ -6,6 +6,8 @@ from models.cloud_model import ArrayString
 class CloudSchema(BaseModel):
     file_path: str
 
+    class Config:
+        arbitrary_types_allowed = True
 
 class ShowCloudResult(BaseModel):
     id: int
@@ -18,3 +20,4 @@ class ShowCloudResult(BaseModel):
 
     class Config():
         from_attributes = True
+        arbitrary_types_allowed = True
