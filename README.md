@@ -64,7 +64,7 @@ The project is organized into different directories:
 
 4. **Start the FastAPI server**:
    ```bash
-   uvicorn main:app --host=0.0.0.0 --port=9000 --log-level=info --reload
+   uvicorn main:app --host=localhost --port=9000 --log-level=info --reload
    ```
 
 ## Event Processing

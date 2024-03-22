@@ -12,12 +12,13 @@ class ArrayString(TypeDecorator):
 
     def process_bind_param(self, value, dialect):
         if value is not None:
-            return ', '.join(value)
+            formatted_value = [f"'{v.strip()}'" for v in value]
+            return ', '.join(formatted_value)
         return None
 
     def process_result_value(self, value, dialect):
         if value is not None:
-            return value.split(', ')
+            return [s.strip().strip("['").strip("']") for s in value.split(',') if s.strip()]
         return None
 
 
