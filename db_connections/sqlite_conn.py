@@ -30,5 +30,5 @@ def get_db_for_repo() -> Generator[Session, None, None]:
 def run_query(query:str):
     with get_db() as db:
         db.execute(
-            query
+            text(query)
         )

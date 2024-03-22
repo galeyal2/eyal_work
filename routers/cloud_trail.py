@@ -3,10 +3,10 @@ from typing import List
 from fastapi import APIRouter, status, Depends
 from sqlalchemy.orm import Session
 
-from db_connections.sqlite_conn import get_db_for_repo
+from db_connections.sqlite_conn import get_db_for_repo, run_query
 from models.cloud_model import CloudEvent
 from repositories.sqlite_repo import select_all_records
-from routers.utils.main_process import event_process, insert_tmp_into_target
+from routers.utils.main_process import event_process
 from schema.cloud_schema import ShowCloudResult
 
 cloud_route = APIRouter(
@@ -19,7 +19,7 @@ cloud_route = APIRouter(
 async def cloud_process(file_source_path: str = 'sources'):
 
     event_process(file_source_path)
-    insert_tmp_into_target()
+    run_query(None)
     return {"message": f"events were processed inserted to the db"}
 
 

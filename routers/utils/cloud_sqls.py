@@ -28,4 +28,4 @@ WHERE
     event_id NOT IN (SELECT event_id FROM cloud_events);
 """
 
-truncate_tmp_table = "truncate table cloud_events_tmp"
+truncate_tmp_table = "DELETE FROM cloud_events_tmp"
