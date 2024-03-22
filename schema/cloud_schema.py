@@ -16,7 +16,7 @@ class ShowCloudResult(BaseModel):
     request_id: str
     event_type: str
     event_timestamp: datetime
-    affected_assets: List[str]
+    affected_assets: list
     anomaly_score: int
 
     class Config:

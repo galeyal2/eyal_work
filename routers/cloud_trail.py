@@ -23,7 +23,7 @@ async def cloud_process(file_source_path: str = 'sources'):
     run_query([read_tmp_without_dup,
                insert_tmp_into_target_sql])
 
-    return {"message": f"events were processed inserted to the db"}
+    return {"message": f"events were processed and inserted to cloud_events table"}
 
 
 @cloud_route.get(path='/', response_model=List[ShowCloudResult])

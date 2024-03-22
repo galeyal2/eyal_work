@@ -33,22 +33,18 @@ def worker_wrapper(worker_id: int,
                    worker_status: dict) -> None:
 
     try:
-        print("eyal")
-        # worker_status[worker_id] = True
         chunk = chunk_queue.get()
-        # # result = target(worker_id,
-        # #                 chunk,
-        # #                 result_queue)
-        worker_status[worker_id] = True
+        result = target(worker_id,
+                        chunk,
+                        result_queue)
 
-        # if result == -1:
-        #     worker_status[worker_id] = False  # Indicate failure
-        # else:
-        #     worker_status[worker_id] = True  # Indicate success
+        if result == -1:
+            worker_status[worker_id] = False  # Indicate failure
+        else:
+            worker_status[worker_id] = True  # Indicate success
     except Exception as e:
-        pass
-        # orca_logger.error(f"Worker {worker_id} failed: {str(e)}")
-        # worker_status[worker_id] = False
+        orca_logger.error(f"Worker {worker_id} failed: {str(e)}")
+        worker_status[worker_id] = False
 
 
 def check_worker_status(worker_status: dict, num_workers: int) -> bool:

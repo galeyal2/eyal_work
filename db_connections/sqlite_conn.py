@@ -24,6 +24,7 @@ def get_db_for_repo() -> Generator[Session, None, None]:
     db = SessionLocal()
     try:
         yield db
+        db.commit()
     finally:
         db.close()
 

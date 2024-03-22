@@ -1,28 +1,24 @@
-import json
-
-from sqlalchemy import Column, DateTime, Integer, String, TypeDecorator, ARRAY
+from sqlalchemy import Column, DateTime, Integer, String, TypeDecorator
 
 from db_connections.sqlite_conn import SqliteBase
 
 
 class ArrayString(TypeDecorator):
+    """
+    Custom type decorator for storing a list of strings in SQLite.
+    """
+
     impl = String
 
     def process_bind_param(self, value, dialect):
         if value is not None:
-            return json.dumps(value)
+            return ', '.join(value)
         return None
 
     def process_result_value(self, value, dialect):
         if value is not None:
-            try:
-                return json.loads(value)
-            except json.JSONDecodeError as e:
-                print("Error decoding JSON:", e)
-                print("Value causing error:", value)
-                return None
+            return value.split(', ')
         return None
-
 
 
 class CloudEventTemp(SqliteBase):
