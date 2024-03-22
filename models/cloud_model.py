@@ -34,7 +34,6 @@ class CloudEventTemp(SqliteBase):
 class CloudEvent(SqliteBase):
     __tablename__ = 'cloud_events'
 
-    id = Column(Integer, autoincrement=True)
     event_id = Column(String(255), primary_key=True)
     request_id = Column(String(255))
     event_type = Column(String(255))

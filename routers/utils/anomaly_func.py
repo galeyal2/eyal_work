@@ -70,9 +70,9 @@ def insert_events_in_db(events):
 
 def fetch_anomaly_score_from_db(event_id):
     with get_db() as db:
-        result = db.execute(text("SELECT anomaly_score FROM cloud_events WHERE event_id=:event_id"),
-                            {"event_id": event_id})
-        if result.fetchone():
-            return result.fetchone()[0]
+        result = db.execute(text(f"SELECT anomaly_score FROM cloud_events WHERE event_id=:event_id"), {"event_id": event_id})
+        row = result.fetchone()
+        if row:
+            return row[0]
         else:
             return
