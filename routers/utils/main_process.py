@@ -12,7 +12,7 @@ def event_process(file_source_path: str = 'sources'):
     file_chunks = read_in_bulks(file_source_path)
     chunk_queue = generate_chunk_queue(file_chunks)
     result_queue = generate_result_queue()
-    run_query(truncate_tmp_table)
+    run_query(truncate_tmp_table)  # truncate temp table
     all_success: bool = create_workers(target=process_chunk,
                                        chunk_queue=chunk_queue,
                                        result_queue=result_queue)

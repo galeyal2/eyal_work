@@ -10,7 +10,6 @@ num_workers = 3
 def create_workers(target: Callable,
                    chunk_queue: queue.Queue,
                    result_queue: queue.Queue) -> bool:
-
     threads = []
     worker_status = {}  # Dictionary to store the status of each worker thread
     for i in range(num_workers):
@@ -31,9 +30,8 @@ def worker_wrapper(worker_id: int,
                    chunk_queue: queue.Queue,
                    result_queue: queue.Queue,
                    worker_status: dict) -> None:
-
     try:
-        chunk = chunk_queue.get()
+        chunk = chunk_queue.get(timeout=10)
         result = target(worker_id,
                         chunk,
                         result_queue)
@@ -42,6 +40,9 @@ def worker_wrapper(worker_id: int,
             worker_status[worker_id] = False  # Indicate failure
         else:
             worker_status[worker_id] = True  # Indicate success
+    except queue.Empty:
+        orca_logger.error(f"Worker {worker_id} timed out while waiting for chunk.")
+        worker_status[worker_id] = True
     except Exception as e:
         orca_logger.error(f"Worker {worker_id} failed: {str(e)}")
         worker_status[worker_id] = False
