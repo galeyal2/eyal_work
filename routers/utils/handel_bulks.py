@@ -4,7 +4,7 @@ from typing import List
 from sortedcontainers import SortedList
 
 
-def read_in_bulks(data_source: str = "sources", num: int = 10000000) -> List[dict]:
+def read_in_bulks(data_source: str = "sources", num: int = 1000) -> List[dict]:
     file_path = os.path.join(data_source, 'fake_cloud_events.csv')
     with open(file_path, "r") as f:
         next(f)

@@ -1,6 +1,6 @@
 read_tmp_without_dup = """
 -- Step 1: Remove duplicates based on event_id from the temporary table
-CREATE TEMP TABLE temp_table_no_duplicates AS
+CREATE TEMP TABLE IF NOT EXISTS temp_table_no_duplicates AS 
 SELECT 
     event_id, 
     MAX(request_id) AS request_id, 

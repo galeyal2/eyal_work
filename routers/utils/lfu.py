@@ -11,7 +11,6 @@ class LFUCache:
     def get(self, key):
         if key in self.cache:
             value, freq = self.cache[key]
-            self.frequency[key] += 1
             if freq == self.min_frequency and not any(self.frequency[key] > self.frequency[k] for k in self.cache):
                 self.min_frequency += 1
             return value
