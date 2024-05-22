@@ -36,4 +36,4 @@ file_name = 'fake_cloud_events.csv'
 file_location = '.' if 'sources' in os.getcwd() else './sources'
 file_path = os.path.join(file_location, file_name)
 
-generate_fake_data_csv(file_path, 10_000)
+generate_fake_data_csv(file_path, 100_000)

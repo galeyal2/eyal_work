@@ -1,4 +1,5 @@
 import logging
+import sys
 
 
 class SingletonLoggerMeta(type):
@@ -10,7 +11,7 @@ class SingletonLoggerMeta(type):
         return cls._instances[name]
 
 
-class MyLogger(metaclass=SingletonLoggerMeta):
+class MyLogger():
     def __init__(self, name="Orca", level="INFO"):
         self.name = name
         self.level = level
@@ -18,10 +19,19 @@ class MyLogger(metaclass=SingletonLoggerMeta):
         self.logger.setLevel(level)
         formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
         console_handler = logging.StreamHandler()
-        console_handler.setFormatter(formatter)
         self.logger.addHandler(console_handler)
+        console_handler.setFormatter(formatter)
 
 name = "orca"
 orca: MyLogger = MyLogger(name, "INFO")
 orca_logger = orca.logger
 orca_logger.info(f"logger has started as {name}")
+
+import logging
+
+def print_all_loggers():
+    print("All loggers:")
+    for logger_name in logging.Logger.manager.loggerDict.keys():
+        print(logger_name)
+
+print_all_loggers()
