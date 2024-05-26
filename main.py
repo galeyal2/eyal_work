@@ -33,6 +33,8 @@ client.set('key', 'value')
 # Get the value back from the Redis server
 value = client.get('key')
 print(os.getenv)
+
+
 print(f'The value of "key" is: {value}')
 print(f'The value of "key" is: {value}')
 print(f'The value of "key" is: {value}')
