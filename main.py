@@ -1,3 +1,6 @@
+import os
+
+import redis
 import uvicorn
 from fastapi import FastAPI
 
@@ -9,6 +12,34 @@ app = FastAPI()
 
 app.include_router(cloud_route)
 cloud_model.SqliteBase.metadata.create_all(sqlite_engine)
+
+# Get Redis connection details from environment variables
+redis_host = os.getenv('REDIS_HOST', 'eyal-redis-server')
+redis_port = int(os.getenv('REDIS_PORT', 6379))
+print(os.environ)
+# Connect to the Redis server
+client = redis.StrictRedis(host=redis_host, port=redis_port, decode_responses=True)
+
+
+client.set('key', 'value')
+
+# Get the value back from the Redis server
+value = client.get('key')
+print(f'The value of "key" is: {value}')
+
+# Set a value in the Redis server
+client.set('key', 'value')
+
+# Get the value back from the Redis server
+value = client.get('key')
+print(os.getenv)
+print(f'The value of "key" is: {value}')
+print(f'The value of "key" is: {value}')
+print(f'The value of "key" is: {value}')
+print(f'The value of "key" is: {value}')
+print(f'The value of "key" is: {value}')
+print(f'The value of "key" is: {value}')
+
 
 if __name__ == "__main__":
     uvicorn.run("main:app",
