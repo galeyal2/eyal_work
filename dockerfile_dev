@@ -1,0 +1,34 @@
+# Stage 1: Build Python application
+FROM python:3.11-slim AS builder
+
+# Set the working directory in the container
+WORKDIR /app
+
+# Copy the requirements file into the container
+COPY requirements.txt .
+
+# Install dependencies
+RUN pip install --no-cache-dir -r requirements.txt
+
+# Copy the project files into the container
+COPY . .
+
+# Stage 2: Final image
+FROM python:3.11-slim
+
+# Set the working directory in the container
+WORKDIR /app
+
+# Copy the Python application from the builder stage
+COPY --from=builder /app /app
+
+# Expose port 9000
+EXPOSE 9000
+
+# Define environment variables
+ENV REDIS_HOST eyal-redis-server
+ENV REDIS_PORT 6379
+
+ 
+# CMD instruction to run the command when the container starts
+CMD ["sh", "-c", "python sources/create_faker_events.py && uvicorn main:app --host=0.0.0.0 --port=9000 --log-level=info --reload"]

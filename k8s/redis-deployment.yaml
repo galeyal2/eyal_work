@@ -1,0 +1,20 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: eyal-redis-server
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: eyal-redis-server
+  template:
+    metadata:
+      labels:
+        app: eyal-redis-server
+    spec:
+      containers:
+      - name: redis
+        image: redis:latest
+        imagePullPolicy: Always  # Ensure that Kubernetes always pulls the latest image
+        ports:
+        - containerPort: 6379

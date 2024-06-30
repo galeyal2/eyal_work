@@ -19,6 +19,7 @@ redis_port = int(os.getenv('REDIS_PORT', 6379))
 print(os.environ)
 # Connect to the Redis server
 client = redis.StrictRedis(host=redis_host, port=redis_port, decode_responses=True)
+# client = redis.StrictRedis(host='localhost', port=redis_port, decode_responses=True)
 
 
 client.set('key', 'value')

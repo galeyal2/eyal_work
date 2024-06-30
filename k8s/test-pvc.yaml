@@ -1,0 +1,18 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: pvc-test-pod
+spec:
+  containers:
+  - name: test-container
+    image: busybox
+    command: ["/bin/sh", "-c"]
+    args:
+    - echo "Test Data" > /sources/test-file.txt && cat /sources/test-file.txt
+    volumeMounts:
+    - name: pvc-volume
+      mountPath: /sources
+  volumes:
+  - name: pvc-volume
+    persistentVolumeClaim:
+      claimName: eyal-pvc
